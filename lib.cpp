@@ -11,7 +11,21 @@ std::string ipAddressFromInputStr(std::string inputStr)
 	return res;
 }
 
-void sortIPAdresses(std::vector<IPAdress> adresses)
+std::vector<std::string> stringToStrings(std::string buf)
+{
+	std::vector<std::string> strings;
+	size_t prev = 0;
+	size_t next;
+	while( ( next = buf.find("\n", prev) ) != std::string::npos )
+	{
+		strings.push_back(buf.substr(prev, next - prev));
+		prev = next + 1;
+	}
+	// strings.push_back(buf.substr(prev, buf.size()));
+	return strings;
+}
+
+void sortIPAdresses(std::vector<IPAdress> &adresses)
 {
 		std::sort(adresses.begin(), adresses.end(),
 			 [](IPAdress &first, IPAdress &second){

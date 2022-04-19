@@ -21,6 +21,7 @@ struct IPAdress
 			components.push_back(std::stoi(strAdress.substr(prev, next - prev)));
 			prev = next + 1;
 		 }
+         components.push_back(std::stoi(strAdress.substr(prev, strAdress.size())));
   	}
     std::string toStr()
     {
@@ -33,7 +34,8 @@ struct IPAdress
 };
 
 std::string ipAddressFromInputStr(std::string inputStr);
-void sortIPAdresses(std::vector<IPAdress> adresses);
+std::vector<std::string> stringToStrings(std::string buf);
+void sortIPAdresses(std::vector<IPAdress> &adresses);
 
 
 #endif

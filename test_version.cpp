@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "lib.h"
+#include <iostream>
 
 TEST(test_ip_filtration, ipAddressFromInputStr) 
 {
@@ -20,6 +21,17 @@ TEST(test_ip_filtration, ipAddressFromInputStr)
     EXPECT_EQ(ipAddressFromInputStr(strs.at(i)), 
               answers.at(i));
   }
+}
+
+TEST(test_ip_filtration, stringToStrings) 
+{
+  std::string str("169.254.0.5\t234\t32\n169.125.0.4\t234\t32\n");
+
+  std::vector<std::string> answers;
+  answers.push_back("169.254.0.5\t234\t32");
+  answers.push_back("169.125.0.4\t234\t32");
+
+  EXPECT_EQ(stringToStrings(str), answers);
 }
 
 TEST(test_ip_filtration, ipAdressConstructorFromStr)
