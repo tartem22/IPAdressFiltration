@@ -1,38 +1,48 @@
+#include <iostream>
 #include "lib.h"
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
-
-
-int main(int, char **) 
+int main()
 {
-	char buf[10240];
-	std::cin.read(buf, sizeof(buf));
-	std::string input(buf);
-
-	std::vector<std::string> strings = stringToStrings(input);
-	std::vector<IPAdress> adresses;
-	for(auto &str : strings)
-		adresses.push_back(IPAdress(str));
-	sortIPAdresses(adresses);
-	for(auto &adress: adresses)
-		std::cout << adress.toStr() << std::endl;
-
-	std::vector<std::string> filteredAdresses;
-	auto it = adresses.begin();
-	while(it < adresses.end())
+	try
 	{
-		it = std::find_if(it, adresses.end(), 
-		[](decltype(*it) ip){return (ip.components.at(0) == 1);});
-		std::cout << it->toStr() << std::endl;
-		if(it < adresses.end())
-			filteredAdresses.push_back(it->toStr());
-		it++;
-	}
-	for(auto &adress: filteredAdresses)
-		std::cout << adress << std::endl;
+		std::vector<std::array<int, 4>> ip_pool;
 
+		for (std::string line; std::getline(std::cin, line);)
+		{
+			std::vector<std::string> v = split(line, '\t');
+			std::vector<std::string> parts = split(v.at(0), '.');
+			ip_pool.push_back(std::array<int, 4>{stoi(parts.at(0)),
+												 stoi(parts.at(1)),
+												 stoi(parts.at(2)),
+												 stoi(parts.at(3))});
+		}
+
+		sortIPAdresses(ip_pool);
+
+		for (auto ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
+			std::cout << ipArrayToString(*ip) << std::endl;
+
+		std::vector<std::array<int, 4>> filtered_1 =
+			filterIPAdresses(ip_pool, 0, 1);
+
+		for (auto ip = filtered_1.cbegin(); ip != filtered_1.cend(); ++ip)
+			std::cout << ipArrayToString(*ip) << std::endl;
+
+		std::vector<std::array<int, 4>> filtered_4670 =
+			filterIPAdresses(filterIPAdresses(ip_pool, 0, 46), 1, 70);
+
+		for (auto ip = filtered_4670.cbegin(); ip != filtered_4670.cend(); ++ip)
+			std::cout << ipArrayToString(*ip) << std::endl;
+
+		std::vector<std::array<int, 4>> filtered_46 = 
+			filterAnyIPAdresses(ip_pool, 46);
+
+		for (auto ip = filtered_46.cbegin(); ip != filtered_46.cend(); ++ip)
+			std::cout << ipArrayToString(*ip) << std::endl;			
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
 	return 0;
 }

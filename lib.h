@@ -3,39 +3,15 @@
 
 #include <string>
 #include <vector>
+#include <array>
 #include <algorithm>
 
-struct IPAdress
-{
-    IPAdress(int first, int second, int third, int fours)
-    {
-        components = {first, second, third, fours};
-    }
-	IPAdress(std::string strAdress)
-	{
-        components.clear();
-		size_t prev = 0;
-		size_t next;
-		 while( ( next = strAdress.find(".", prev) ) != std::string::npos )
-		 {
-			components.push_back(std::stoi(strAdress.substr(prev, next - prev)));
-			prev = next + 1;
-		 }
-         components.push_back(std::stoi(strAdress.substr(prev, strAdress.size())));
-  	}
-    std::string toStr()
-    {
-        return std::to_string(components.at(0)) + "." + 
-                std::to_string(components.at(1)) + "." +  
-                std::to_string(components.at(2)) + "." +  
-                std::to_string(components.at(3)); 
-    }
-	std::vector<int> components = {0, 0, 0, 0};
-};
-
-std::string ipAddressFromInputStr(std::string inputStr);
-std::vector<std::string> stringToStrings(std::string buf);
-void sortIPAdresses(std::vector<IPAdress> &adresses);
-
+std::vector<std::string> split(const std::string &str, char d);
+std::string ipArrayToString(const std::array<int, 4> ipArray);
+void sortIPAdresses(std::vector<std::array<int, 4>> &adresses);
+std::vector<std::array<int, 4>> filterIPAdresses(
+	const std::vector<std::array<int, 4>> adresses, int inx, int val);
+std::vector<std::array<int, 4>> filterAnyIPAdresses(
+	const std::vector<std::array<int, 4>> adresses, int val);
 
 #endif

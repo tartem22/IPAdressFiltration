@@ -9,10 +9,10 @@ option(WITH_GTEST "Whether to build Gtest test" ON)
 
 configure_file(version.h.in version.h)
 
-add_executable(ipAdressFiltration_cli main.cpp)
+add_executable(ip_filter main.cpp)
 add_library(ipAdressFiltration lib.cpp)
 
-set_target_properties(ipAdressFiltration_cli ipAdressFiltration PROPERTIES
+set_target_properties(ip_filter ipAdressFiltration PROPERTIES
     CXX_STANDARD 14
     CXX_STANDARD_REQUIRED ON
 )
@@ -21,7 +21,7 @@ target_include_directories(ipAdressFiltration
     PRIVATE "${CMAKE_BINARY_DIR}"
 )
 
-target_link_libraries(ipAdressFiltration_cli PRIVATE
+target_link_libraries(ip_filter PRIVATE
     ipAdressFiltration
 )
 
@@ -49,7 +49,7 @@ if(WITH_GTEST)
 endif()
 
 if (MSVC)
-    target_compile_options(ipAdressFiltration_cli PRIVATE
+    target_compile_options(ip_filter PRIVATE
         /W4
     )
     target_compile_options(ipAdressFiltration PRIVATE
@@ -61,7 +61,7 @@ if (MSVC)
         )
     endif()
 else ()
-    target_compile_options(ipAdressFiltration_cli PRIVATE
+    target_compile_options(ip_filter PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
     target_compile_options(ipAdressFiltration PRIVATE
@@ -74,7 +74,7 @@ else ()
     endif()
 endif()
 
-install(TARGETS ipAdressFiltration_cli RUNTIME DESTINATION bin)
+install(TARGETS ip_filter RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
