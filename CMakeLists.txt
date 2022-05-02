@@ -7,10 +7,8 @@ project(ipAdressFiltration VERSION ${PROJECT_VESRION})
 
 option(WITH_GTEST "Whether to build Gtest test" ON)
 
-configure_file(version.h.in version.h)
-
 add_executable(ip_filter main.cpp)
-add_library(ipAdressFiltration lib.cpp)
+add_library(ipAdressFiltration ip_filtration.cpp)
 
 set_target_properties(ip_filter ipAdressFiltration PROPERTIES
     CXX_STANDARD 14
@@ -35,14 +33,14 @@ if(WITH_GTEST)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     FetchContent_MakeAvailable(googletest)
 
-    add_executable(test_version test_version.cpp)
+    add_executable(tests tests.cpp)
 
-    set_target_properties(test_version PROPERTIES
+    set_target_properties(tests PROPERTIES
         CXX_STANDARD 14
         CXX_STANDARD_REQUIRED ON
     )
 
-    target_link_libraries(test_version
+    target_link_libraries(tests
         gtest_main
         ipAdressFiltration
     )
@@ -56,7 +54,7 @@ if (MSVC)
         /W4
     )
     if(WITH_GTEST)
-        target_compile_options(test_version PRIVATE
+        target_compile_options(tests PRIVATE
             /W4
         )
     endif()
@@ -68,7 +66,7 @@ else ()
         -Wall -Wextra -pedantic -Werror
     )
     if(WITH_GTEST)
-        target_compile_options(test_version PRIVATE
+        target_compile_options(tests PRIVATE
             -Wall -Wextra -pedantic -Werror
         )
     endif()
@@ -86,5 +84,5 @@ include(CPack)
 if(WITH_GTEST)
     enable_testing()
     include(GoogleTest)
-    gtest_discover_tests(test_version)
+    gtest_discover_tests(tests)
 endif()
