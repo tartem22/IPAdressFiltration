@@ -19,7 +19,6 @@ jobs:
       - run: cmake --build .
       - run: cmake --build . --target tests
       - run: cmake --build . --target package
-      - name: Tests
       - run: ./tests
       - name: Create Release
         id: create_release
